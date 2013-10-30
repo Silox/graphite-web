@@ -124,7 +124,12 @@
 
 # Override the URL for the login link (e.g. for django_openid_auth)
 #LOGIN_URL = '/account/login'
+#CALLBACK_URL = '/account/callback'
 
+#client_id =
+#client_secret =
+#authorization_base_url =
+#token_url =
 
 ##########################
 # Database Configuration #

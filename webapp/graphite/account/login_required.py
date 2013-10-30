@@ -7,8 +7,8 @@ class LoginRequiredMiddleware:
     than the LOGIN_URL.
     """
     def process_request(self, request):
-        if not request.user.is_authenticated():
-            
+        if 'oauth_token' not in request.session or 'oauth_state' not in request.session:
+
             path = request.path_info.rstrip('/')
-            if path != settings.LOGIN_URL:
+            if path != settings.LOGIN_URL and path != settings.CALLBACK_URL:
                 return HttpResponseRedirect(settings.LOGIN_URL)

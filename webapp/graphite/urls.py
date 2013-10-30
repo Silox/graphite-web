@@ -32,6 +32,9 @@ urlpatterns = patterns('',
   ('graphlot/', include('graphite.graphlot.urls')),
   ('^version/', include('graphite.version.urls')),
   ('^events/', include('graphite.events.urls')),
+  ('^login?$', 'graphite.oauth.login'),
+  ('^callback?$', 'graphite.oauth.callback'),
+  ('^get_data?$', 'graphite.oauth.profile'),
   ('', 'graphite.browser.views.browser'),
 )
 

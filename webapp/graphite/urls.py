@@ -33,8 +33,8 @@ urlpatterns = patterns('',
   ('^version/', include('graphite.version.urls')),
   ('^events/', include('graphite.events.urls')),
   ('^login?$', 'graphite.oauth.login'),
+  ('^logout?$', 'graphite.oauth.logout'),
   ('^callback?$', 'graphite.oauth.callback'),
-  ('^get_data?$', 'graphite.oauth.profile'),
   ('', 'graphite.browser.views.browser'),
 )
 

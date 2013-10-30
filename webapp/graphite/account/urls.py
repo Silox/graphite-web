@@ -15,8 +15,6 @@ limitations under the License."""
 from django.conf.urls.defaults import *
 
 urlpatterns = patterns('graphite.account.views',
-  ('^login/?$', 'loginView'),
-  ('^logout/?$', 'logoutView'),
   ('^edit/?$', 'editProfile'),
   ('^update/?$','updateProfile'),
 )

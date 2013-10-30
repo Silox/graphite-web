@@ -21,6 +21,9 @@ def login(request):
 
     # State is used to prevent CSRF, keep this for later.
     request.session['oauth_state'] = state
+
+    print "State obtained:"
+
     return HttpResponseRedirect(authorization_url)
 
 
@@ -43,10 +46,11 @@ def callback(request):
     # in /profile.
     request.session['oauth_token'] = token
 
-    return HttpResponseRedirect("/get_data")
+    print "Token obtained"
 
-def profile(request):
-    """Fetching a protected resource using an OAuth 2 token.
-    """
-    github = OAuth2Session(client_id, token=request.session['oauth_token'])
-    return HttpResponse(github.get('https://api.github.com/user'), mimetype='application/json')
+    return HttpResponseRedirect("/")
+
+def logout(request):
+    print "Logging out!"
+    request.session.flush()
+    return HttpResponse("Logged out!")

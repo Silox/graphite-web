@@ -63,11 +63,7 @@ limitations under the License. -->
       <span class="title">Graphite</span>
       <div class="nav">
         <ul>
-        {% if user.is_authenticated %}
-          <li>Logged in as <b>{{ user.username }}</b>, <a href="/account/logout/" target="_top">logout</a> (<a href="/account/edit/" target="_top">edit profile</a>)</li>
-        {% else %}
-          <li><a href="{{login_url}}" target="_top">Login</a></li>
-        {% endif %}
+          <li><a href="/logout" target="_top">logout</a> (<a href="/account/edit/" target="_top">edit profile</a>)</li>
         {% if documentation_url %}
           <li><a href="{{documentation_url}}" target="_newWindow">Documentation</a></li>
         {% endif %}

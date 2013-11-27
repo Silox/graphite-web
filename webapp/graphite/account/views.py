@@ -25,6 +25,10 @@ def editProfile(request):
   context = { 'profile' : getProfile(request) }
   return render_to_response("editProfile.html",context)
 
+def logoutView(request):
+    logout(request)
+    return HttpResponse("Logged out!")
+
 def updateProfile(request):
   profile = getProfile(request,allowDefault=False)
   if profile:
@@ -33,7 +37,4 @@ def updateProfile(request):
   nextPage = request.POST.get('nextPage','/')
   return HttpResponseRedirect(nextPage)
 
-def logoutView(request):
-    logout(request)
-    return HttpResponse("Logged out!")
 

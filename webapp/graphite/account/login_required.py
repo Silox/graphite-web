@@ -10,10 +10,7 @@ class LoginRequiredMiddleware:
         path = request.path_info.rstrip('/')
         print "Path: " + path
 
-        # No token yet and not logging out? Onto the login! Also: urgh for favicons
-        if path != settings.LOGOUT_URL and path != "/favicon.ico" and ('oauth_token' not in request.session or
-                'oauth_state' not in request.session):
-
-            print "Logging in!"
+        if not request.user.is_authenticated():
             if path != settings.LOGIN_URL and path != settings.CALLBACK_URL:
+                print "Logging in!"
                 return HttpResponseRedirect(settings.LOGIN_URL)

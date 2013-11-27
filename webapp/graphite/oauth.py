@@ -1,7 +1,10 @@
 from django.http import HttpResponse, HttpResponseRedirect
-from graphite.util import json
-from requests_oauthlib import OAuth2Session
 from django.conf import settings
+from django.contrib.auth import authenticate, login
+
+from requests_oauthlib import OAuth2Session
+
+from graphite.util import json
 
 # This information is obtained upon registration of a new GitHub OAuth
 # application here: https://github.com/settings/applications/new
@@ -9,9 +12,8 @@ client_id = settings.OAUTH2_CLIENT_ID
 client_secret = settings.OAUTH2_CLIENT_SECRET
 authorization_base_url = settings.OAUTH2_AUTH_BASE_URL
 token_url = settings.OAUTH2_TOKEN_URL
-token_url = settings.OAUTH2_TOKEN_URL
 
-def login(request):
+def authorize(request):
     """Step 1: User Authorization.
 
     Redirect the user/resource owner to the OAuth provider (i.e. Github)
@@ -53,7 +55,12 @@ def callback(request):
     print "Token obtained"
     print "Exit callback"
 
-    get_protected_url(request, 'http://localhost:8000/api/current_user/')
+    response = get_protected_url(request, 'http://localhost:8000/api/current_user/')
+
+    user = authenticate(userdict=response)
+    print user.username
+    login(request, user)
+    request.user = user
 
     return HttpResponseRedirect("/")
 
@@ -61,7 +68,7 @@ def get_protected_url(request, url):
     print "Getting protected URL"
 
     session = OAuth2Session(client_id, token=request.session['oauth_token'])
-    r = json.loads(session.get(url))
+    r = json.loads(session.get(url).content)
 
     return r
 

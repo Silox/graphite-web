@@ -19,15 +19,12 @@ def authorize(request):
     Redirect the user/resource owner to the OAuth provider (i.e. Github)
     using an URL with a few key OAuth parameters.
     """
-    print "Enter login"
 
     session = OAuth2Session(client_id, redirect_uri='http://test.local:8001/callback')
     authorization_url, state = session.authorization_url(authorization_base_url)
 
     # State is used to prevent CSRF, keep this for later.
     request.session['oauth_state'] = state
-
-    print "Exit login"
 
     return HttpResponseRedirect(authorization_url)
 
@@ -52,20 +49,15 @@ def callback(request):
     # in /profile.
     request.session['oauth_token'] = token
 
-    print "Token obtained"
-    print "Exit callback"
-
     response = get_protected_url(request, 'http://localhost:8000/api/current_user/')
 
     user = authenticate(userdict=response)
-    print user.username
     login(request, user)
     request.user = user
 
     return HttpResponseRedirect("/")
 
 def get_protected_url(request, url):
-    print "Getting protected URL"
 
     session = OAuth2Session(client_id, token=request.session['oauth_token'])
     r = json.loads(session.get(url).content)
@@ -73,6 +65,5 @@ def get_protected_url(request, url):
     return r
 
 def logout(request):
-    print "Logging out!"
     request.session.flush()
     return HttpResponse("Logged out!")

@@ -20,8 +20,8 @@ from graphite.logger import log
 from graphite.account.models import Profile
 
 def logoutView(request):
-    logout(request)
-    return HttpResponse("Logged out!")
+  logout(request)
+  return HttpResponse("Logged out!")
 
 def editProfile(request):
   if not request.user.is_authenticated():

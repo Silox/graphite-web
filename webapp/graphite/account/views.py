@@ -19,15 +19,15 @@ from graphite.util import getProfile
 from graphite.logger import log
 from graphite.account.models import Profile
 
+def logoutView(request):
+    logout(request)
+    return HttpResponse("Logged out!")
+
 def editProfile(request):
   if not request.user.is_authenticated():
     return HttpResponseRedirect('../..')
   context = { 'profile' : getProfile(request) }
   return render_to_response("editProfile.html",context)
-
-def logoutView(request):
-    logout(request)
-    return HttpResponse("Logged out!")
 
 def updateProfile(request):
   profile = getProfile(request,allowDefault=False)

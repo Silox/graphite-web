@@ -64,7 +64,7 @@ limitations under the License. -->
       <div class="nav">
         <ul>
         {% if user.is_authenticated %}
-          <li>Logged in as <b>{{ user.username }}</b>, <a href="{{logout_url}}" target="_top">logout</a> (<a href="/account/edit/" target="_top">edit profile</a>)</li>
+          <li>Logged in as <b>{{ user.username }}</b>, <a href="/account/logout/" target="_top">logout</a> (<a href="/account/edit/" target="_top">edit profile</a>)</li>
         {% else %}
           <li><a href="{{login_url}}" target="_top">Login</a></li>
         {% endif %}

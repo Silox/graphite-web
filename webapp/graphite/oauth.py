@@ -64,6 +64,3 @@ def get_protected_url(request, url):
 
     return r
 
-def logout(request):
-    request.session.flush()
-    return HttpResponse("Logged out!")

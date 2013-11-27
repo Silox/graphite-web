@@ -13,7 +13,7 @@ See the License for the specific language governing permissions and
 limitations under the License."""
 
 from django.shortcuts import render_to_response
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from graphite.util import getProfile
 from graphite.logger import log
@@ -32,3 +32,8 @@ def updateProfile(request):
     profile.save()
   nextPage = request.POST.get('nextPage','/')
   return HttpResponseRedirect(nextPage)
+
+def logoutView(request):
+    logout(request)
+    return HttpResponse("Logged out!")
+

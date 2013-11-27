@@ -11,5 +11,4 @@ class LoginRequiredMiddleware:
 
         if not request.user.is_authenticated():
             if path != settings.LOGIN_URL and path != settings.CALLBACK_URL:
-                print "Logging in!"
                 return HttpResponseRedirect(settings.LOGIN_URL)

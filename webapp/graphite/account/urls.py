@@ -17,4 +17,5 @@ from django.conf.urls.defaults import *
 urlpatterns = patterns('graphite.account.views',
   ('^edit/?$', 'editProfile'),
   ('^update/?$','updateProfile'),
+  ('^logout/?$', 'logoutView')
 )

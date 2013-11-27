@@ -7,6 +7,8 @@ class LoginRequiredMiddleware:
     than the LOGIN_URL.
     """
     def process_request(self, request):
+        path = request.path_info.rstrip('/')
+
         if not request.user.is_authenticated():
             if path != settings.LOGIN_URL and path != settings.CALLBACK_URL:
                 print "Logging in!"

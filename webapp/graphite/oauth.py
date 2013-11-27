@@ -9,6 +9,7 @@ client_id = settings.OAUTH2_CLIENT_ID
 client_secret = settings.OAUTH2_CLIENT_SECRET
 authorization_base_url = settings.OAUTH2_AUTH_BASE_URL
 token_url = settings.OAUTH2_TOKEN_URL
+token_url = settings.OAUTH2_TOKEN_URL
 
 def login(request):
     """Step 1: User Authorization.
@@ -16,13 +17,15 @@ def login(request):
     Redirect the user/resource owner to the OAuth provider (i.e. Github)
     using an URL with a few key OAuth parameters.
     """
-    github = OAuth2Session(client_id)
-    authorization_url, state = github.authorization_url(authorization_base_url)
+    print "Enter login"
+
+    session = OAuth2Session(client_id, redirect_uri='http://test.local:8001/callback')
+    authorization_url, state = session.authorization_url(authorization_base_url)
 
     # State is used to prevent CSRF, keep this for later.
     request.session['oauth_state'] = state
 
-    print "State obtained:"
+    print "Exit login"
 
     return HttpResponseRedirect(authorization_url)
 
@@ -36,9 +39,10 @@ def callback(request):
     callback URL. With this redirection comes an authorization code included
     in the redirect URL. We will use that to obtain an access token.
     """
+    print "Enter callback"
 
-    github = OAuth2Session(client_id, state=request.session['oauth_state'])
-    token = github.fetch_token(token_url, client_secret=client_secret,
+    session = OAuth2Session(client_id, state=request.session['oauth_state'], redirect_uri='http://test.local:8001/callback')
+    token = session.fetch_token(token_url, client_secret=client_secret,
                                authorization_response=request.build_absolute_uri())
 
     # At this point you can fetch protected resources but lets save
@@ -47,8 +51,19 @@ def callback(request):
     request.session['oauth_token'] = token
 
     print "Token obtained"
+    print "Exit callback"
+
+    get_protected_url(request, 'http://localhost:8000/api/current_user/')
 
     return HttpResponseRedirect("/")
+
+def get_protected_url(request, url):
+    print "Getting protected URL"
+
+    session = OAuth2Session(client_id, token=request.session['oauth_token'])
+    r = json.loads(session.get(url))
+
+    return r
 
 def logout(request):
     print "Logging out!"

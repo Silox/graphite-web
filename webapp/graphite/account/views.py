@@ -21,7 +21,7 @@ from graphite.account.models import Profile
 
 def logoutView(request):
   logout(request)
-  return HttpResponse("Logged out!")
+  return render_to_response("logout.html")
 
 def editProfile(request):
   if not request.user.is_authenticated():

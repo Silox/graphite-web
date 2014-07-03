@@ -10,8 +10,10 @@ from graphite.util import json
 # application here: https://github.com/settings/applications/new
 client_id = settings.OAUTH2_CLIENT_ID
 client_secret = settings.OAUTH2_CLIENT_SECRET
+redirect_uri = settings.OAUTH2_REDIRECT_URI
 authorization_base_url = settings.OAUTH2_AUTH_BASE_URL
 token_url = settings.OAUTH2_TOKEN_URL
+account_url = settings.OAUTH2_ACCOUNT_URL
 
 def authorize(request):
     """Step 1: User Authorization.
@@ -20,7 +22,7 @@ def authorize(request):
     using an URL with a few key OAuth parameters.
     """
 
-    session = OAuth2Session(client_id, redirect_uri='http://test.local:8001/callback')
+    session = OAuth2Session(client_id, scope=['read', 'account_rest_cmdline'], redirect_uri=redirect_uri)
     authorization_url, state = session.authorization_url(authorization_base_url)
 
     # State is used to prevent CSRF, keep this for later.
@@ -38,29 +40,32 @@ def callback(request):
     callback URL. With this redirection comes an authorization code included
     in the redirect URL. We will use that to obtain an access token.
     """
-    print "Enter callback"
 
-    session = OAuth2Session(client_id, state=request.session['oauth_state'], redirect_uri='http://test.local:8001/callback')
+    session = OAuth2Session(client_id, state=request.session['oauth_state'], scope=['read', 'account_rest_cmdline'], redirect_uri=redirect_uri)
+
     token = session.fetch_token(token_url, client_secret=client_secret,
-                               authorization_response=request.build_absolute_uri())
+                               authorization_response=request.build_absolute_uri(),
+                               verify=False)
 
     # At this point you can fetch protected resources but lets save
     # the token and show how this is done from a persisted token
     # in /profile.
     request.session['oauth_token'] = token
 
-    response = get_protected_url(request, 'http://localhost:8000/api/current_user/')
+    response = get_protected_url(token, account_url)
+    print response
 
     user = authenticate(userdict=response)
+    print user
+
     login(request, user)
     request.user = user
 
     return HttpResponseRedirect("/")
 
-def get_protected_url(request, url):
-
-    session = OAuth2Session(client_id, token=request.session['oauth_token'])
-    r = json.loads(session.get(url).content)
+def get_protected_url(token, url):
+    session = OAuth2Session(client_id, token=token, scope=['read', 'account_rest_cmdline'], redirect_uri=redirect_uri)
+    content = session.get(url, verify=False).content
+    r = json.loads(content)
 
     return r
-

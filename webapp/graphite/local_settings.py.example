@@ -123,14 +123,17 @@
 #USE_REMOTE_USER_AUTHENTICATION = True
 
 # Override the URL for the login link (e.g. for django_openid_auth)
-#LOGIN_URL = '/account/login'
-#LOGOUT_URL = '/account/logout'
-#CALLBACK_URL = '/account/callback'
+LOGIN_URL = '/login'
+LOGOUT_URL = '/account/logout'
+CALLBACK_URL = '/account/callback'
 
-#client_id =
-#client_secret =
-#authorization_base_url =
-#token_url =
+OAUTH2_CLIENT_ID = ''
+OAUTH2_CLIENT_SECRET = ''
+OAUTH2_REDIRECT_URI = ''
+OAUTH2_AUTH_BASE_URL = ''
+OAUTH2_TOKEN_URL = ''
+OAUTH2_ACCOUNT_URL = ''
+
 
 ##########################
 # Database Configuration #

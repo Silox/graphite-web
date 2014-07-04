@@ -14,6 +14,7 @@ redirect_uri = settings.OAUTH2_REDIRECT_URI
 authorization_base_url = settings.OAUTH2_AUTH_BASE_URL
 token_url = settings.OAUTH2_TOKEN_URL
 account_url = settings.OAUTH2_ACCOUNT_URL
+scope = settings.OAUTH2_SCOPE
 
 def authorize(request):
     """Step 1: User Authorization.
@@ -22,7 +23,9 @@ def authorize(request):
     using an URL with a few key OAuth parameters.
     """
 
-    session = OAuth2Session(client_id, scope=['read', 'account_rest_cmdline'], redirect_uri=redirect_uri)
+    # Create a new session
+    session = OAuth2Session(client_id, scope=scope, redirect_uri=redirect_uri)
+    # Get the authorization url and state
     authorization_url, state = session.authorization_url(authorization_base_url)
 
     # State is used to prevent CSRF, keep this for later.
@@ -41,29 +44,36 @@ def callback(request):
     in the redirect URL. We will use that to obtain an access token.
     """
 
-    session = OAuth2Session(client_id, state=request.session['oauth_state'], scope=['read', 'account_rest_cmdline'], redirect_uri=redirect_uri)
+    # Create a new session with the state token obtained in Step 1
+    session = OAuth2Session(client_id, state=request.session['oauth_state'], scope=scope, redirect_uri=redirect_uri)
 
+    # Get the token
     token = session.fetch_token(token_url, client_secret=client_secret,
                                authorization_response=request.build_absolute_uri(),
                                verify=False)
 
-    # At this point you can fetch protected resources but lets save
-    # the token and show how this is done from a persisted token
-    # in /profile.
+    # Save the token in the session
     request.session['oauth_token'] = token
 
+    # Get the user id
     response = get_protected_url(token, account_url)
 
+    # Create a new user if needed and log him in
     user = authenticate(userdict=response)
-
     login(request, user)
     request.user = user
 
+    # Redirect the logged in user to the index
     return HttpResponseRedirect("/")
 
 def get_protected_url(token, url):
-    session = OAuth2Session(client_id, token=token, scope=['read', 'account_rest_cmdline'], redirect_uri=redirect_uri)
-    content = session.get(url, verify=False).content
-    r = json.loads(content)
+    """ Returns a hash of the returned content from the protected url """
 
-    return r
+    # Create a session
+    session = OAuth2Session(client_id, token=token, scope=scope, redirect_uri=redirect_uri)
+
+    # Get the content
+    content = session.get(url, verify=False).content
+
+    # Return it
+    return json.loads(content)

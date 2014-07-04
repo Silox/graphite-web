@@ -19,6 +19,7 @@ from graphite.util import getProfile
 from graphite.logger import log
 from graphite.account.models import Profile
 
+
 def loginView(request):
   username = request.POST.get('username')
   password = request.POST.get('password')
@@ -39,9 +40,9 @@ def loginView(request):
     return render_to_response("login.html",{'nextPage' : nextPage})
 
 def logoutView(request):
-   nextPage = request.GET.get('nextPage','/')
-   logout(request)
-   return HttpResponseRedirect(nextPage)
+  nextPage = request.GET.get('nextPage','/')
+  logout(request)
+  return HttpResponseRedirect(nextPage)
 
 def editProfile(request):
   if not request.user.is_authenticated():

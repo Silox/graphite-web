@@ -124,9 +124,9 @@
 
 ## OAUTH2
 # Override the URL for the login link (e.g. for django_openid_auth)
-LOGIN_URL = '/login'
-LOGOUT_URL = '/account/logout'
-CALLBACK_URL = '/account/callback'
+LOGIN_URL = '/oauth/login'
+LOGOUT_URL = '/oauth/logout'
+CALLBACK_URL = '/oauth/callback'
 
 OAUTH2_CLIENT_ID = ''
 OAUTH2_CLIENT_SECRET = ''

@@ -53,10 +53,8 @@ def callback(request):
     request.session['oauth_token'] = token
 
     response = get_protected_url(token, account_url)
-    print response
 
     user = authenticate(userdict=response)
-    print user
 
     login(request, user)
     request.user = user

@@ -57,5 +57,3 @@ def updateProfile(request):
     profile.save()
   nextPage = request.POST.get('nextPage','/')
   return HttpResponseRedirect(nextPage)
-
-

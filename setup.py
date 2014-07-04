@@ -44,6 +44,7 @@ setup(
   packages=[
     'graphite',
     'graphite.account',
+    'graphite.oauth',
     'graphite.browser',
     'graphite.cli',
     'graphite.composer',

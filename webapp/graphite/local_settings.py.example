@@ -134,7 +134,7 @@ OAUTH2_REDIRECT_URI = ''
 OAUTH2_AUTH_BASE_URL = 'https://account.vscentrum.be/django/oauth/authorize/'
 OAUTH2_TOKEN_URL = 'https://account.vscentrum.be/django/oauth/token/'
 OAUTH2_ACCOUNT_URL = 'https://account.vscentrum.be/django/oauth/current_vsc_user'
-OAUTH2_SCOPE = ['read', 'account_rest_cmdline']
+OAUTH2_SCOPE = ['read']
 
 
 

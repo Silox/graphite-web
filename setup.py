@@ -33,13 +33,13 @@ conf_files = [ ('conf', glob('conf/*.example')) ]
 examples = [ ('examples', glob('examples/example-*')) ]
 
 setup(
-  name='graphite-web',
-  version='0.9.12',
+  name='graphite-web-hpc',
+  version='0.9.12--hpc-oauth',
   url='http://graphite-project.github.com',
-  author='Chris Davis',
-  author_email='chrismd@gmail.com',
+  author='Chris Davis, Tom Naessens',
+  author_email='chrismd@gmail.com, tom.naessens@ugent.be',
   license='Apache Software License 2.0',
-  description='Enterprise scalable realtime graphing',
+  description='Enterprise job-based scalable realtime graphing for HPC clusters',
   package_dir={'' : 'webapp'},
   packages=[
     'graphite',

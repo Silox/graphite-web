@@ -33,8 +33,8 @@ conf_files = [ ('conf', glob('conf/*.example')) ]
 examples = [ ('examples', glob('examples/example-*')) ]
 
 setup(
-  name='graphite-web-hpc',
-  version='0.9.12--hpc-oauth',
+  name='graphite-web-hpc-oauth',
+  version='0.9.12-HPC--OAuth-0.1',
   url='http://graphite-project.github.com',
   author='Chris Davis, Tom Naessens',
   author_email='chrismd@gmail.com, tom.naessens@ugent.be',
